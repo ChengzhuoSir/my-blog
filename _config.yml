@@ -1,0 +1,22 @@
+# Site settings
+title: "ChengzhuoSir 的科技笔记"
+description: "记录技术、产品与创作。"
+lang: zh-CN
+timezone: Asia/Shanghai
+
+# URL settings (update for custom domain)
+url: "https://chengzhuosir.github.io"
+baseurl: "/my-blog"
+
+# Author
+author:
+  name: "ChengzhuoSir"
+  bio: "关注工程实践、产品体验与科技美学。"
+
+# Build settings
+markdown: kramdown
+permalink: /blog/:year/:month/:day/:title/
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap

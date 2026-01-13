@@ -1,0 +1,20 @@
+---
+layout: default
+title: 博客
+description: "技术与创作日志。"
+---
+
+<section class="section" data-reveal>
+  <h2>全部文章</h2>
+  <p>按时间倒序记录技术实践、工具与思考。</p>
+  <div class="blog-list">
+    {% for post in site.posts %}
+    <div class="blog-item">
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <div class="blog-meta">
+        {{ post.date | date: '%Y.%m.%d' }} · {{ post.description | default: '持续更新中' }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

@@ -1,0 +1,347 @@
+:root {
+  color-scheme: only light;
+  --bg: #0b0f1a;
+  --bg-soft: #0f172a;
+  --panel: rgba(15, 23, 42, 0.72);
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-strong: #22d3ee;
+  --line: rgba(148, 163, 184, 0.22);
+  --shadow: 0 30px 60px rgba(15, 23, 42, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, #1f2937 0%, transparent 40%),
+    radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.18), transparent 50%),
+    radial-gradient(circle at 80% 0%, rgba(56, 189, 248, 0.16), transparent 45%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+[data-reveal].is-visible {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.page {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(0px);
+  opacity: 0.4;
+  z-index: -1;
+  animation: float 12s ease-in-out infinite;
+}
+
+.page::before {
+  top: -120px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 60%);
+}
+
+.page::after {
+  bottom: -160px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.3), transparent 60%);
+  animation-delay: 2s;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0 28px;
+}
+
+.site-title {
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: var(--accent-strong);
+}
+
+.site-main {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.hero {
+  padding: 32px 28px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.hero h1 {
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-size: 38px;
+  margin: 0 0 12px;
+}
+
+.hero p {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+  color: #0b1120;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 12px 25px rgba(34, 211, 238, 0.35);
+}
+
+.button.secondary {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.section {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px 26px;
+  background: rgba(15, 23, 42, 0.55);
+  animation: fadeUp 0.9s ease forwards;
+}
+
+.section h2 {
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+
+.section p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.card {
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.blog-list {
+  display: grid;
+  gap: 14px;
+}
+
+.blog-item {
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.55);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.blog-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.blog-item a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.blog-meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.post-header {
+  padding: 28px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.9s ease forwards;
+}
+
+.post-title {
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+
+.post-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.post-description {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.post-content {
+  margin-top: 24px;
+  line-height: 1.8;
+}
+
+.post-content h2,
+.post-content h3 {
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  margin-top: 28px;
+}
+
+.post-content a {
+  color: var(--accent-strong);
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 32px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.footer-divider {
+  opacity: 0.6;
+}
+
+pre,
+code {
+  font-family: "IBM Plex Mono", "Fira Code", monospace;
+  font-size: 0.95em;
+}
+
+pre {
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(2, 6, 23, 0.75);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(18px);
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+}
