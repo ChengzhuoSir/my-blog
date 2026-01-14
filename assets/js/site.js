@@ -44,13 +44,17 @@
   const renderMath = () => {
     if (window.MathJax && typeof window.MathJax.typesetPromise === "function") {
       window.MathJax.typesetPromise();
+      return true;
     }
+    return false;
   };
 
   const run = () => {
     renderReveal();
     const rendered = renderMermaid();
-    renderMath();
+    if (!renderMath()) {
+      scheduleMath();
+    }
     if (!rendered) {
       scheduleMermaid();
     }
@@ -65,6 +69,17 @@
         scheduleMermaid(retries - 1);
       } else {
         renderMath();
+      }
+    }, 400);
+  };
+
+  const scheduleMath = (retries = 8) => {
+    if (retries <= 0) {
+      return;
+    }
+    setTimeout(() => {
+      if (!renderMath()) {
+        scheduleMath(retries - 1);
       }
     }, 400);
   };

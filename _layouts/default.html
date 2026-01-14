@@ -53,10 +53,13 @@
       };
     </script>
     <script
-      async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+      defer
+      src="{{ '/assets/vendor/mathjax/es5/tex-mml-chtml.js' | relative_url }}"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script
+      defer
+      src="{{ '/assets/vendor/mermaid/mermaid.min.js' | relative_url }}"
+    ></script>
     <script src="{{ '/assets/js/site.js' | relative_url }}"></script>
   </body>
 </html>
