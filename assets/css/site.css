@@ -1,14 +1,14 @@
 :root {
   color-scheme: only light;
-  --bg: #0b0f1a;
-  --bg-soft: #0f172a;
-  --panel: rgba(15, 23, 42, 0.72);
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #38bdf8;
-  --accent-strong: #22d3ee;
-  --line: rgba(148, 163, 184, 0.22);
-  --shadow: 0 30px 60px rgba(15, 23, 42, 0.45);
+  --bg: #fbfcff;
+  --bg-soft: #f1f6ff;
+  --panel: rgba(255, 255, 255, 0.92);
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #1d4ed8;
+  --accent-strong: #0ea5e9;
+  --line: rgba(15, 23, 42, 0.1);
+  --shadow: 0 22px 44px rgba(15, 23, 42, 0.1);
 }
 
 * {
@@ -17,12 +17,27 @@
 
 body {
   margin: 0;
-  font-family: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "Times New Roman", "Times", "KaiTi", "Kaiti SC", "STKaiti",
+    "Songti SC", "SimSun", serif;
   color: var(--text);
-  background: radial-gradient(circle at top, #1f2937 0%, transparent 40%),
-    radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.18), transparent 50%),
-    radial-gradient(circle at 80% 0%, rgba(56, 189, 248, 0.16), transparent 45%),
-    var(--bg);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.025) 0,
+      rgba(15, 23, 42, 0.025) 1px,
+      transparent 1px,
+      transparent 72px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(15, 23, 42, 0.025) 0,
+      rgba(15, 23, 42, 0.025) 1px,
+      transparent 1px,
+      transparent 72px
+    ),
+    radial-gradient(circle at 10% 8%, rgba(29, 78, 216, 0.16), transparent 48%),
+    radial-gradient(circle at 90% 6%, rgba(14, 165, 233, 0.16), transparent 46%),
+    linear-gradient(120deg, #ffffff 0%, #f2f7ff 42%, var(--bg) 100%);
   min-height: 100vh;
 }
 
@@ -37,9 +52,34 @@ body {
 
 .page {
   position: relative;
+  z-index: 1;
   max-width: 1100px;
   margin: 0 auto;
   padding: 32px 24px 48px;
+}
+
+.side-art {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: min(420px, max(0px, calc((100vw - 1100px) / 2)));
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.38;
+  pointer-events: none;
+  z-index: 0;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.side-left {
+  left: 0;
+  background-image: url("../images/side-left.jpg");
+}
+
+.side-right {
+  right: 0;
+  background-image: url("../images/side-right.jpg");
 }
 
 .page::before,
@@ -58,13 +98,13 @@ body {
 .page::before {
   top: -120px;
   left: -80px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 60%);
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.25), transparent 60%);
 }
 
 .page::after {
   bottom: -160px;
   right: -60px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.3), transparent 60%);
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.25), transparent 60%);
   animation-delay: 2s;
 }
 
@@ -77,7 +117,8 @@ body {
 }
 
 .site-title {
-  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-family: "Times New Roman", "Times", "KaiTi", "Kaiti SC", "STKaiti",
+    "Songti SC", "SimSun", serif;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -118,7 +159,8 @@ body {
 }
 
 .hero h1 {
-  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-family: "Times New Roman", "Times", "KaiTi", "Kaiti SC", "STKaiti",
+    "Songti SC", "SimSun", serif;
   font-size: 38px;
   margin: 0 0 12px;
 }
@@ -128,6 +170,31 @@ body {
   color: var(--muted);
   font-size: 18px;
   line-height: 1.6;
+}
+
+.focus-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: -6px 0 22px;
+}
+
+.focus-label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.focus-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  background: rgba(37, 99, 235, 0.08);
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d4ed8;
 }
 
 .hero-actions {
@@ -146,7 +213,7 @@ body {
   color: #0b1120;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 12px 25px rgba(34, 211, 238, 0.35);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
 }
 
 .button.secondary {
@@ -160,12 +227,13 @@ body {
   border: 1px solid var(--line);
   border-radius: 20px;
   padding: 24px 26px;
-  background: rgba(15, 23, 42, 0.55);
+  background: var(--panel);
   animation: fadeUp 0.9s ease forwards;
 }
 
 .section h2 {
-  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-family: "Times New Roman", "Times", "KaiTi", "Kaiti SC", "STKaiti",
+    "Songti SC", "SimSun", serif;
   margin: 0 0 12px;
   font-size: 24px;
 }
@@ -182,11 +250,15 @@ body {
   margin-top: 18px;
 }
 
+.hero-grid {
+  margin-top: 22px;
+}
+
 .card {
   padding: 18px;
   border-radius: 16px;
   border: 1px solid rgba(148, 163, 184, 0.18);
-  background: rgba(2, 6, 23, 0.35);
+  background: rgba(248, 250, 255, 0.85);
 }
 
 .card h3 {
@@ -210,13 +282,13 @@ body {
   padding: 16px 18px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: rgba(15, 23, 42, 0.55);
+  background: var(--panel);
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .blog-item:hover {
   transform: translateY(-4px);
-  border-color: rgba(56, 189, 248, 0.4);
+  border-color: rgba(37, 99, 235, 0.35);
 }
 
 .blog-item a {
@@ -235,13 +307,14 @@ body {
   padding: 28px;
   border-radius: 20px;
   border: 1px solid var(--line);
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--panel);
   box-shadow: var(--shadow);
   animation: fadeUp 0.9s ease forwards;
 }
 
 .post-title {
-  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-family: "Times New Roman", "Times", "KaiTi", "Kaiti SC", "STKaiti",
+    "Songti SC", "SimSun", serif;
   font-size: 36px;
   margin: 0 0 10px;
 }
@@ -274,12 +347,41 @@ body {
 
 .post-content h2,
 .post-content h3 {
-  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-family: "Times New Roman", "Times", "KaiTi", "Kaiti SC", "STKaiti",
+    "Songti SC", "SimSun", serif;
   margin-top: 28px;
 }
 
 .post-content a {
   color: var(--accent-strong);
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 22px;
+  font-size: 14px;
+}
+
+.post-content th,
+.post-content td {
+  border: 2px solid rgba(15, 23, 42, 0.2);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.post-content thead th {
+  background: rgba(37, 99, 235, 0.1);
+  font-weight: 600;
+}
+
+.post-content tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.03);
+}
+
+.post-content .table-wrap {
+  overflow-x: auto;
 }
 
 .site-footer {
@@ -305,7 +407,7 @@ code {
 pre {
   padding: 16px;
   border-radius: 12px;
-  background: rgba(2, 6, 23, 0.75);
+  background: rgba(248, 250, 255, 0.95);
   border: 1px solid var(--line);
   overflow-x: auto;
 }
@@ -343,5 +445,9 @@ pre {
 
   .section {
     padding: 20px;
+  }
+
+  .side-art {
+    display: none;
   }
 }
