@@ -1,0 +1,418 @@
+---
+layout: null
+title: "霓虹贪吃蛇"
+permalink: /games/snake/
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>霓虹贪吃蛇 - 完整版</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050505;
+            font-family: 'Orbitron', sans-serif;
+            user-select: none; /* 防止双击选中文字 */
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* UI 层 */
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* 顶部 HUD (分数 + 退出按钮) */
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0; /* 默认隐藏，开始游戏后显示 */
+            transition: opacity 0.5s;
+        }
+
+        #score-board {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        /* 游戏中的退出小按钮 */
+        #quit-btn-ingame {
+            pointer-events: auto;
+            background: rgba(255, 0, 85, 0.2);
+            border: 1px solid #ff0055;
+            color: #ff0055;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        #quit-btn-ingame:hover {
+            background: #ff0055;
+            color: white;
+            box-shadow: 0 0 15px #ff0055;
+        }
+
+        /* 主菜单卡片 */
+        #menu {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 50px 70px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            text-align: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        h1 {
+            color: #fff;
+            margin: 0 0 10px 0;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+        }
+
+        .subtitle {
+            color: #0ff;
+            font-size: 1rem;
+            margin-bottom: 40px;
+            opacity: 0.7;
+            letter-spacing: 2px;
+        }
+
+        p#final-score {
+            color: #aaa;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* 按钮容器 */
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        button.main-btn {
+            background: transparent;
+            color: #0ff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border: 2px solid #0ff;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            min-width: 160px;
+        }
+
+        button.main-btn:hover {
+            background: #0ff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* 次要按钮 (如：返回主菜单) */
+        button.secondary-btn {
+            background: transparent;
+            color: #ff0055;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border: 2px solid #ff0055;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            min-width: 160px;
+        }
+
+        button.secondary-btn:hover {
+            background: #ff0055;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+            transform: scale(1.05);
+        }
+
+        #site-back {
+            display: inline-block;
+            margin-top: 18px;
+            color: rgba(0, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.2s ease, text-shadow 0.2s ease;
+        }
+
+        #site-back:hover {
+            color: #0ff;
+            text-shadow: 0 0 12px rgba(0, 255, 255, 0.7);
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none !important;
+        }
+        
+        /* 隐藏元素 (用于display:none切换) */
+        .d-none {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="ui-layer">
+        
+        <div id="hud">
+            <div id="score-board">SCORE: <span id="score">0</span></div>
+            <button id="quit-btn-ingame" onclick="backToMenu()">✕ QUIT</button>
+        </div>
+
+        <div id="menu">
+            <h1>Neon Snake</h1>
+            <div class="subtitle">CYBERPUNK EDITION</div>
+            
+            <p id="final-score" class="d-none">Score: 0</p>
+            
+            <div class="btn-group">
+                <button id="start-btn" class="main-btn" onclick="startGame()">Start Game</button>
+                
+                <button id="menu-back-btn" class="secondary-btn d-none" onclick="backToMenu()">Menu</button>
+            </div>
+            <a id="site-back" href="{{ '/games/' | relative_url }}">返回游戏列表</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // UI 元素
+        const scoreElement = document.getElementById('score');
+        const hudElement = document.getElementById('hud');
+        const menuElement = document.getElementById('menu');
+        const finalScoreElement = document.getElementById('final-score');
+        const startBtn = document.getElementById('start-btn');
+        const menuBackBtn = document.getElementById('menu-back-btn');
+        const titleSubtitle = document.querySelector('.subtitle');
+
+        // 游戏变量
+        let gridSize = 25;
+        let tileCountX, tileCountY;
+        let speed = 7;
+        let gameInterval;
+        let isGameRunning = false;
+        
+        let snake = [];
+        let food = { x: 0, y: 0 };
+        let velocity = { x: 0, y: 0 };
+        let score = 0;
+
+        // 初始化画布
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            tileCountX = Math.floor(canvas.width / gridSize);
+            tileCountY = Math.floor(canvas.height / gridSize);
+        }
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            if(!isGameRunning) drawBackground();
+        });
+        resizeCanvas();
+        drawBackground(); // 初始背景
+
+        // 键盘监听
+        document.addEventListener('keydown', (e) => {
+            if (!isGameRunning) return;
+            switch(e.key) {
+                case 'ArrowLeft': if (velocity.x !== 1) { velocity.x = -1; velocity.y = 0; } break;
+                case 'ArrowUp': if (velocity.y !== 1) { velocity.x = 0; velocity.y = -1; } break;
+                case 'ArrowRight': if (velocity.x !== -1) { velocity.x = 1; velocity.y = 0; } break;
+                case 'ArrowDown': if (velocity.y !== -1) { velocity.x = 0; velocity.y = 1; } break;
+                case 'Escape': backToMenu(); break; // ESC 键退出
+            }
+        });
+
+        // --- 核心流程控制 ---
+
+        function startGame() {
+            // UI 切换
+            menuElement.classList.add('hidden');
+            hudElement.style.opacity = '1';
+            
+            resetGameLogic();
+            isGameRunning = true;
+            gameInterval = setInterval(gameLoop, 1000 / speed);
+        }
+
+        function resetGameLogic() {
+            let startX = Math.floor(tileCountX / 2);
+            let startY = Math.floor(tileCountY / 2);
+            snake = [{ x: startX, y: startY }, { x: startX-1, y: startY }, { x: startX-2, y: startY }];
+            velocity = { x: 1, y: 0 };
+            score = 0;
+            speed = 7;
+            scoreElement.innerText = score;
+            placeFood();
+        }
+
+        function gameOver() {
+            isGameRunning = false;
+            clearInterval(gameInterval);
+            
+            // UI 切换：显示游戏结束状态
+            hudElement.style.opacity = '0'; // 隐藏顶部HUD
+            menuElement.classList.remove('hidden');
+            
+            // 修改菜单内容
+            document.querySelector('h1').innerText = "GAME OVER";
+            titleSubtitle.style.display = 'none'; // 隐藏副标题
+            
+            finalScoreElement.innerText = `Final Score: ${score}`;
+            finalScoreElement.classList.remove('d-none');
+            
+            startBtn.innerText = "Try Again";
+            menuBackBtn.classList.remove('d-none'); // 显示“返回主菜单”按钮
+        }
+
+        function backToMenu() {
+            isGameRunning = false;
+            clearInterval(gameInterval);
+            
+            // UI 重置为初始状态
+            hudElement.style.opacity = '0';
+            menuElement.classList.remove('hidden');
+            
+            // 还原标题和按钮
+            document.querySelector('h1').innerText = "NEON SNAKE";
+            titleSubtitle.style.display = 'block';
+            
+            finalScoreElement.classList.add('d-none');
+            startBtn.innerText = "Start Game";
+            menuBackBtn.classList.add('d-none'); // 隐藏“返回主菜单”按钮
+            
+            drawBackground(); // 重绘纯净背景
+        }
+
+        // --- 游戏循环 ---
+
+        function gameLoop() {
+            // 移动逻辑
+            const head = { x: snake[0].x + velocity.x, y: snake[0].y + velocity.y };
+
+            // 撞墙或撞自己
+            if (head.x < 0 || head.x >= tileCountX || head.y < 0 || head.y >= tileCountY || snake.some(part => part.x === head.x && part.y === head.y)) {
+                gameOver();
+                return;
+            }
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                scoreElement.innerText = score;
+                if(score % 5 === 0) {
+                    clearInterval(gameInterval);
+                    speed += 0.5;
+                    gameInterval = setInterval(gameLoop, 1000 / speed);
+                }
+                placeFood();
+            } else {
+                snake.pop();
+            }
+
+            draw();
+        }
+
+        function placeFood() {
+            food.x = Math.floor(Math.random() * tileCountX);
+            food.y = Math.floor(Math.random() * tileCountY);
+            // 简单防重叠
+            if (snake.some(p => p.x === food.x && p.y === food.y)) placeFood();
+        }
+
+        // --- 绘图 ---
+
+        function draw() {
+            drawBackground();
+
+            // 蛇
+            for (let i = 0; i < snake.length; i++) {
+                let part = snake[i];
+                ctx.fillStyle = (i === 0) ? '#ffffff' : '#0ff';
+                ctx.shadowColor = '#0ff';
+                ctx.shadowBlur = (i === 0) ? 20 : 10;
+                ctx.fillRect(part.x * gridSize + 1, part.y * gridSize + 1, gridSize - 2, gridSize - 2);
+            }
+
+            // 食物
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff0055';
+            ctx.fillStyle = '#ff0055';
+            ctx.beginPath();
+            ctx.arc(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, gridSize/2 - 2, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawBackground() {
+            // 背景渐变
+            let gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(1, '#050505');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 网格
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x <= canvas.width; x += gridSize) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 0; y <= canvas.height; y += gridSize) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+        }
+    </script>
+</body>
+</html>

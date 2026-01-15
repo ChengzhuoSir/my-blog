@@ -203,6 +203,10 @@ body {
   gap: 12px;
 }
 
+.card-actions {
+  margin-top: 14px;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -365,7 +369,7 @@ body {
 
 .post-content th,
 .post-content td {
-  border: 2px solid rgba(15, 23, 42, 0.2);
+  border: 2px solid rgba(15, 23, 42, 0.35);
   padding: 10px 12px;
   text-align: left;
   vertical-align: top;
@@ -402,6 +406,112 @@ pre,
 code {
   font-family: "IBM Plex Mono", "Fira Code", monospace;
   font-size: 0.95em;
+}
+
+.code-wrap {
+  position: relative;
+  margin: 16px 0 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  background: rgba(248, 250, 255, 0.96);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.code-wrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 38px;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.06),
+    rgba(15, 23, 42, 0)
+  );
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  pointer-events: none;
+}
+
+.code-wrap pre {
+  margin: 0;
+  padding: 48px 16px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.code-wrap pre code {
+  display: block;
+}
+
+.code-lang {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  z-index: 1;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  background: rgba(15, 23, 42, 0.08);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.code-toast {
+  position: absolute;
+  top: 12px;
+  right: 86px;
+  z-index: 1;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #fff;
+  font-size: 11px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.code-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.code-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.code-copy:hover {
+  transform: translateY(-1px);
+  border-color: rgba(29, 78, 216, 0.4);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+}
+
+.code-copy:active {
+  transform: translateY(0);
+}
+
+.code-copy.copied {
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
 }
 
 pre {

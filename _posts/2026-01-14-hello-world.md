@@ -2,6 +2,7 @@
 layout: post
 title: "第一篇：Cartographer联合超声波建图"
 description: "理解原理-改进方法。"
+date: 2026-01-14
 tags:
   - 思考
   - 方法论
